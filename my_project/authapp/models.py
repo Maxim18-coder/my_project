@@ -3,14 +3,11 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
     middle_name = models.CharField(max_length=150, blank=True, null=True)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
-    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    email = models.EmailField(unique=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

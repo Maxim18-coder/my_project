@@ -37,4 +37,3 @@ class AccountTests(TestCase):
             self.login_url,
             {'username': 'validuser', 'password': 'rightpass'}
         )
-

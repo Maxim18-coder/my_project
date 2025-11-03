@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,6 +13,9 @@ from .permissions import *
 class RegisterAPI(APIView):
 
     def post(self, request):
+        if not settings.ALLOW_REGISTRATION:
+            return Response({"detail": "Registration is currently disabled."}, status=HTTP_403_FORBIDDEN)
+
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             new_user = serializer.save()
@@ -34,7 +38,7 @@ class LoginAPI(APIView):
         if not user.check_password(password):
             return Response({"detail": "Invalid credentials"}, status=HTTP_401_UNAUTHORIZED)
 
-        token = Token.objects.get_or_create(user=user)
+        token = Token.objects.get_or_create(user=user)[0]
         return Response({'token': str(token)})
 
 
